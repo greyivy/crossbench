@@ -17,8 +17,11 @@ from crossbench.action_runner.action.action import Action
 from crossbench.action_runner.action.action_type import ActionType
 from crossbench.action_runner.action.all import ACTIONS_TUPLE
 from crossbench.action_runner.action.get import GetAction
+from crossbench.action_runner.action.set_keyboard_focus_on_addressbar import SetKeyboardFocusOnAddressbarAction
+from crossbench.action_runner.action.text_input import TextInputAction
 from crossbench.action_runner.action.wait_for_ready_state import \
     WaitForReadyStateAction
+from crossbench.benchmarks.loading.input_source import InputSource
 from crossbench.config import ConfigError, ConfigObject, ConfigParser
 from crossbench.parse import NumberParser, ObjectParser
 
@@ -92,7 +95,13 @@ class ActionBlock(ConfigObject):
 
   @classmethod
   def from_url(cls, url: str, duration: dt.timedelta) -> ActionBlock:
-    actions: tuple[Action, ...] = (GetAction(url, duration),)
+    lastDuration = duration - dt.timedelta(seconds=2)
+
+    actions: tuple[Action, ...] = (
+        SetKeyboardFocusOnAddressbarAction(url, dt.timedelta(seconds=1)),
+        TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), url),
+        TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e")
+    )
     if not duration:
       actions += (WaitForReadyStateAction(),)
     return ActionBlock(actions=actions)
@@ -145,6 +154,8 @@ class ActionBlock(ConfigObject):
     for action in self.actions:
       if action.TYPE == ActionType.GET:
         return cast(GetAction, action).url
+      elif action.TYPE == ActionType.TEXT_INPUT:
+        return cast(TextInputAction, action).text
     raise RuntimeError("No GET action with an URL found.")
 
 
