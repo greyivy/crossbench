@@ -143,6 +143,7 @@ class ChromiumBasedWebDriver(
     service = self.WEB_DRIVER_SERVICE(
         executable_path=os.fspath(driver_path),
         service_args=service_args,
+        port=9251,
         log_output=self._stdout_log_file,
     )
     if hasattr(service, "log_file"):
@@ -152,6 +153,11 @@ class ChromiumBasedWebDriver(
 
     # TODO: support remote platforms
     driver = self._create_driver(options, service)
+
+    import time
+
+    time.sleep(10)
+
     # Prevent debugging overhead.
     self._execute_cdp_cmd(driver, "Runtime.setMaxCallStackSizeToCapture",
                           {"size": 0})
