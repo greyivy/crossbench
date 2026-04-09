@@ -44,7 +44,14 @@ class DDGWebDriver(DDGBaseMixin, ChromiumBasedWebDriver):
     assert isinstance(options, ChromeOptions)
     assert isinstance(service, ChromeService)
     try:
-      return webdriver.Chrome(options=options, service=service)
+        try:
+            import subprocess
+
+            subprocess.run("--terminate-on-running", executable=options.binary_location)
+        except Exception:
+            pass
+
+        return webdriver.Chrome(options=options, service=service)
     except selenium.common.exceptions.WebDriverException as e:
       msg: list[str] = [f"Could not start WebDriver: {e.msg}"]
       if self.is_locally_compiled():
