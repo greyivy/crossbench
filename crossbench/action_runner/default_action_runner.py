@@ -231,6 +231,8 @@ class DefaultActionRunner(ActionRunner):
       with run.actions("TextInput", measure=False) as actions:
           if text := action.text:
               TypeString(text, True)
+
+              time.sleep(5)
           else:
               raise InputSourceNotImplementedError(self, action, action.input_source)
 
