@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import datetime as dt
 import functools
+import time
 from typing import TYPE_CHECKING, ClassVar, Self, Type
 
 from typing_extensions import override
@@ -91,6 +92,8 @@ class SetKeyboardFocusOnAddressbarAction(BaseDurationAction):
 
   @override
   def run_with(self, run: Run, action_runner: ActionRunner) -> None:
+    action_runner.text_input_keyboard(run, TextInputAction(InputSource.KEYBOARD, self._duration, "{d}"))
+    time.sleep(2)
     action_runner.text_input_keyboard(run, TextInputAction(InputSource.KEYBOARD, self._duration, "{d}"))
 
   @override
