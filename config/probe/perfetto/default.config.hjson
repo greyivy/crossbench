@@ -18,6 +18,8 @@
                       enabled_categories: "scheduler"
                       enabled_categories: "sequence_manager"
                       enabled_categories: "disabled-by-default-toplevel.flow"
+                      enabled_categories: "loading"
+                      enabled_categories: "navigation"
                       enabled_categories: "__metadata"
                       timestamp_unit_multiplier: 1000
                       filter_debug_annotations: false
