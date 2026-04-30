@@ -20,6 +20,7 @@
                       enabled_categories: "disabled-by-default-toplevel.flow"
                       enabled_categories: "loading"
                       enabled_categories: "navigation"
+                      enabled_categories: "blink.user_timing"
                       enabled_categories: "__metadata"
                       timestamp_unit_multiplier: 1000
                       filter_debug_annotations: false

@@ -19,6 +19,7 @@ from crossbench.action_runner.action.all import ACTIONS_TUPLE
 from crossbench.action_runner.action.get import GetAction
 from crossbench.action_runner.action.set_keyboard_focus_on_addressbar import SetKeyboardFocusOnAddressbarAction
 from crossbench.action_runner.action.text_input import TextInputAction
+from crossbench.action_runner.action.wait import WaitAction
 from crossbench.action_runner.action.wait_for_ready_state import \
     WaitForReadyStateAction
 from crossbench.benchmarks.loading.input_source import InputSource
@@ -99,8 +100,11 @@ class ActionBlock(ConfigObject):
 
     actions: tuple[Action, ...] = (
         SetKeyboardFocusOnAddressbarAction(url, dt.timedelta(seconds=1)),
+        # TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "{d}"),
         TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), url),
-        TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e")
+        TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e", mark_event=True),
+        # WaitAction(duration=dt.timedelta(seconds=10)),
+        # TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "{\4}"),
     )
     if not duration:
       actions += (WaitForReadyStateAction(),)

@@ -232,7 +232,12 @@ class DefaultActionRunner(ActionRunner):
           if text := action.text:
               TypeString(text, True)
 
-              time.sleep(5)
+              if action.mark_event:
+                  actions.js(
+                      "performance.mark(arguments[0],{detail: arguments[1]});",
+                      arguments=['TextInput', text])
+
+              actions.wait(2)
           else:
               raise InputSourceNotImplementedError(self, action, action.input_source)
 
