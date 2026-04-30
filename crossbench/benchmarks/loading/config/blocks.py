@@ -101,10 +101,14 @@ class ActionBlock(ConfigObject):
     actions: tuple[Action, ...] = (
         SetKeyboardFocusOnAddressbarAction(url, dt.timedelta(seconds=1)),
         # TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "{d}"),
+        TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "http://example.com"),
+        TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e"),
+        SetKeyboardFocusOnAddressbarAction(url, dt.timedelta(seconds=1)),
         TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), url),
         TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e", mark_event=True),
         # WaitAction(duration=dt.timedelta(seconds=10)),
         # TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "{\4}"),
+        WaitForReadyStateAction()
     )
     if not duration:
       actions += (WaitForReadyStateAction(),)
@@ -155,11 +159,16 @@ class ActionBlock(ConfigObject):
 
   @property
   def first_url(self) -> str:
+    counter = 0
+
     for action in self.actions:
       if action.TYPE == ActionType.GET:
         return cast(GetAction, action).url
       elif action.TYPE == ActionType.TEXT_INPUT:
-        return cast(TextInputAction, action).text
+        if counter == 3:
+            return cast(TextInputAction, action).text
+        else:
+            counter += 1
     raise RuntimeError("No GET action with an URL found.")
 
 

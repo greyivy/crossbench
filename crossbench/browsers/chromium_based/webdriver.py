@@ -153,11 +153,6 @@ class ChromiumBasedWebDriver(
 
     # TODO: support remote platforms
     driver = self._create_driver(options, service)
-
-    import time
-
-    time.sleep(10)
-
     # Prevent debugging overhead.
     self._execute_cdp_cmd(driver, "Runtime.setMaxCallStackSizeToCapture",
                           {"size": 0})

@@ -93,8 +93,6 @@ class SetKeyboardFocusOnAddressbarAction(BaseDurationAction):
   @override
   def run_with(self, run: Run, action_runner: ActionRunner) -> None:
     action_runner.text_input_keyboard(run, TextInputAction(InputSource.KEYBOARD, self._duration, "{d}"))
-    time.sleep(2)
-    action_runner.text_input_keyboard(run, TextInputAction(InputSource.KEYBOARD, self._duration, "{d}"))
 
   @override
   def to_json(self) -> JsonDict:

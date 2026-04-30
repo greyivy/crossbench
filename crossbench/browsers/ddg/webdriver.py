@@ -5,6 +5,8 @@
 from __future__ import annotations
 
 import logging
+import os
+import shutil
 from typing import TYPE_CHECKING
 
 import selenium.common.exceptions
@@ -19,7 +21,10 @@ from crossbench.browsers.chromium.webdriver import ChromiumBasedWebDriver, \
     ChromiumWebDriverAndroid, ChromiumWebDriverChromeOsSsh, \
     ChromiumWebDriverSsh, LocalChromiumWebDriverAndroid
 from crossbench.browsers.chromium_based import helper
+from crossbench.browsers.settings import Settings
 from crossbench.browsers.webdriver import DriverException
+from crossbench.flags.base import Flags
+from crossbench.flags.chrome import ChromeFlags
 
 if TYPE_CHECKING:
   from selenium.webdriver.chromium.options import ChromiumOptions
@@ -39,6 +44,16 @@ class DDGWebDriver(DDGBaseMixin, ChromiumBasedWebDriver):
             | BrowserAttributes.WEBDRIVER)
 
   @override
+  def _init_flags(self, settings: Settings) -> ChromeFlags:
+    flags: Flags = super()._init_flags(settings)
+
+    if os.path.exists('remoteConfigOverride.json'):
+        self._flags.set("--force-remote-config-source",
+                        os.path.join(os.getcwd(), 'remoteConfigOverride.json'))
+
+    return self._flags
+
+  @override
   def _create_driver(self, options: ChromiumOptions,
                      service: ChromiumService) -> ChromiumDriver:
     assert isinstance(options, ChromeOptions)
@@ -50,6 +65,11 @@ class DDGWebDriver(DDGBaseMixin, ChromiumBasedWebDriver):
         #     subprocess.run("--terminate-on-running", executable=options.binary_location)
         # except Exception:
         #     pass
+
+        # if os.path.exists('remoteConfigOverride.json'):
+        #     shutil.copyfile('remoteConfigOverride.json',
+        #                     os.path.join(os.path.dirname(options.binary_location),
+        #                                  'forcedRemoteConfig.json'))
 
         return webdriver.Chrome(options=options, service=service)
     except selenium.common.exceptions.WebDriverException as e:
