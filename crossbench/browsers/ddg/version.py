@@ -19,7 +19,8 @@ class DDGVersion(ChromiumVersion):
       rf"duckduckgo(?:{ChromiumVersion.CHANNEL_RE.pattern})? ", re.I)
 
   _VERSION_MAP: dict[int, tuple[int, int, int, int]] = {
-      152: (146, 0, 7680, 165)
+      152: (146, 0, 7680, 165),
+      155: (147, 0, 7727, 118)
   }
 
   @classmethod
@@ -29,7 +30,7 @@ class DDGVersion(ChromiumVersion):
       full_version: str) -> tuple[tuple[int, ...], BrowserVersionChannel, str]:
 
       if full_version.startswith("DuckDuckGo 1.0.0+"):
-          full_version = "DuckDuckGo 0.152.4.0"
+          full_version = "DuckDuckGo 0.155.4.0"
 
       parsed_ddg_version = super()._parse(full_version)
 
