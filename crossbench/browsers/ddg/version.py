@@ -20,7 +20,8 @@ class DDGVersion(ChromiumVersion):
 
   _VERSION_MAP: dict[int, tuple[int, int, int, int]] = {
       152: (146, 0, 7680, 165),
-      155: (147, 0, 7727, 118)
+      155: (147, 0, 7727, 118),
+      156: (147, 0, 7727, 118)
   }
 
   @classmethod
