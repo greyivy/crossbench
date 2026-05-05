@@ -86,12 +86,17 @@ class InteractivePage(Page):
   @property
   @override
   def first_url(self) -> str:
+    counter = 0
+
     for block in self.blocks:
       for action in block:
-        if action.TYPE == ActionType.GET:
-          return cast(GetAction, action).url
-        elif action.TYPE == ActionType.TEXT_INPUT:
-            return cast(TextInputAction, action).text
+          if action.TYPE == ActionType.GET:
+            return cast(GetAction, action).url
+          elif action.TYPE == ActionType.TEXT_INPUT:
+            if counter == 3:
+                return cast(TextInputAction, action).text
+            else:
+                counter += 1
     raise RuntimeError("No GET action with an URL found.")
 
   def create_failure_artifacts(self,
