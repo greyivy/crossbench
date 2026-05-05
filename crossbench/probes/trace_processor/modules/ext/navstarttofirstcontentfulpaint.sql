@@ -44,7 +44,9 @@ sq_6899 AS (
        _viz_slices_for_ui_table_0.name LIKE 'Navigation: %' AND
       _viz_slices_for_ui_table_0.name NOT LIKE 'Navigation: chrome%' AND
       _viz_slices_for_ui_table_0.name NOT LIKE 'Navigation: about:blank' AND
-      _viz_slices_for_ui_table_0.name NOT LIKE 'Navigation: data%'
+      _viz_slices_for_ui_table_0.name NOT LIKE 'Navigation: data%' AND
+      _viz_slices_for_ui_table_0.name NOT LIKE 'Navigation: https://example.com/' AND
+      _viz_slices_for_ui_table_0.name NOT LIKE 'Navigation: https://static.ddg.local/Application/NewTabPage/Html/index.html'
     ))
 ),
 sq_6895 AS (
