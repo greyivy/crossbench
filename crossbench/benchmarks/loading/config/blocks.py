@@ -103,6 +103,7 @@ class ActionBlock(ConfigObject):
         # TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "{d}"),
         TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "http://example.com"),
         TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e"),
+        WaitAction(duration=dt.timedelta(seconds=5)),
         SetKeyboardFocusOnAddressbarAction(url, dt.timedelta(seconds=1)),
         TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), url),
         TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e", mark_event=True),
