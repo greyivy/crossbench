@@ -100,15 +100,15 @@ class ActionBlock(ConfigObject):
 
     actions: tuple[Action, ...] = (
         SetKeyboardFocusOnAddressbarAction(url, dt.timedelta(seconds=1)),
-        # TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "{d}"),
         TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "http://example.com"),
         TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e"),
-        WaitAction(duration=dt.timedelta(seconds=5)),
         SetKeyboardFocusOnAddressbarAction(url, dt.timedelta(seconds=1)),
         TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), url),
+        # The next two lines are a hack to work around a bug in the address
+        # bar where we're dropping characters at the beginning of typing.
+        TextInputAction(InputSource.KEYBOARD, lastDuration, "[a]\p"),
+        TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), url),
         TextInputAction(InputSource.KEYBOARD, lastDuration, "\\e", mark_event=True),
-        # WaitAction(duration=dt.timedelta(seconds=10)),
-        # TextInputAction(InputSource.KEYBOARD, dt.timedelta(seconds=1), "{\4}"),
         WaitForReadyStateAction()
     )
     if not duration:
@@ -166,7 +166,7 @@ class ActionBlock(ConfigObject):
       if action.TYPE == ActionType.GET:
         return cast(GetAction, action).url
       elif action.TYPE == ActionType.TEXT_INPUT:
-        if counter == 3:
+        if counter == 2:
             return cast(TextInputAction, action).text
         else:
             counter += 1

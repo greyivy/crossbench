@@ -142,10 +142,15 @@ class PageConfig(ConfigObject):
 
   @property
   def first_url(self) -> str:
+    counter = 0
+
     for action in self.actions():
       if action.TYPE == ActionType.GET:
         return cast(GetAction, action).url
       elif action.TYPE == ActionType.TEXT_INPUT:
-        return cast(TextInputAction, action).text
+        if counter == 2:
+            return cast(TextInputAction, action).text
+        else:
+            counter += 1
     logging.debug("PageConfig: No GET action with an URL found.")
     return ""

@@ -93,7 +93,7 @@ class InteractivePage(Page):
           if action.TYPE == ActionType.GET:
             return cast(GetAction, action).url
           elif action.TYPE == ActionType.TEXT_INPUT:
-            if counter == 3:
+            if counter == 2:
                 return cast(TextInputAction, action).text
             else:
                 counter += 1

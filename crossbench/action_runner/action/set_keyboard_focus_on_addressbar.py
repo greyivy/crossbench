@@ -92,7 +92,12 @@ class SetKeyboardFocusOnAddressbarAction(BaseDurationAction):
 
   @override
   def run_with(self, run: Run, action_runner: ActionRunner) -> None:
-    action_runner.text_input_keyboard(run, TextInputAction(InputSource.KEYBOARD, self._duration, "{d}"))
+    # The pause in the ALT+D is to work around a bug in DDGWV where
+    # we don't pass the modifier keys back to WPF when we replicate
+    # shortcut key inputs.  The automation is fast enough that it
+    # releases the ALT key before the input event is replayed, so
+    # without the pause, this just presses D in WPF...
+    action_runner.text_input_keyboard(run, TextInputAction(InputSource.KEYBOARD, self._duration, "{d\p}\p\p"))
 
   @override
   def to_json(self) -> JsonDict:
