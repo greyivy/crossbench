@@ -32,7 +32,7 @@ class DDGVersion(ChromiumVersion):
       full_version: str) -> tuple[tuple[int, ...], BrowserVersionChannel, str]:
 
       if full_version.startswith("DuckDuckGo 1.0.0+"):
-          full_version = "DuckDuckGo 0.155.4.0"
+          full_version = "DuckDuckGo 0.157.0.0"
 
       parsed_ddg_version = super()._parse(full_version)
 
