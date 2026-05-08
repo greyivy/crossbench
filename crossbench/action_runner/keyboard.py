@@ -96,6 +96,8 @@ def TypeString(string_to_type,
     'a': '\a', 'b': '\b', 'f': '\f', 'n': '\n', 'r': '\r', 't': '\t', 'v': '\v'}
 
   for char in string_to_type:
+    print("Typing: " + char + "\nShift: " + str(win32api.GetAsyncKeyState(win32con.VK_SHIFT) < 0) + "\nCtrl: " + str(win32api.GetAsyncKeyState(win32con.VK_CONTROL) < 0) + "\nAlt: " + str(win32api.GetAsyncKeyState(win32con.VK_MENU) < 0) + "\n")
+
     vk = None
     handled = False
 

@@ -51,6 +51,10 @@ class DDGWebDriver(DDGBaseMixin, ChromiumBasedWebDriver):
         self._flags.set("--force-remote-config-source",
                         os.path.join(os.getcwd(), 'remoteConfigOverride.json'))
 
+    self._flags.update(dict([
+        ("--debug-output-file", os.path.join(os.getcwd(), 'browser.log'))
+    ]))
+
     return self._flags
 
   @override
