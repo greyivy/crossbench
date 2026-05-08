@@ -326,7 +326,7 @@ class WebDriverBrowser(Browser, metaclass=abc.ABCMeta):
       assert self._is_running
       self.close_all_tabs()
     finally:
-      time.sleep(2)
+      time.sleep(5)
       super().quit()
 
   @override
