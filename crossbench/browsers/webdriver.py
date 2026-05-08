@@ -360,6 +360,9 @@ class WebDriverBrowser(Browser, metaclass=abc.ABCMeta):
     except Exception as e:  # noqa: BLE001
       logging.debug("Could not quit browser: %s\n%s", e, traceback.format_exc())
     finally:
+      if self._private_driver.service.process.pid:
+        self.platform.terminate(self._private_driver.service.process.pid)
+
       self._is_running = False
 
 
