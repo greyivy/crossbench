@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import logging
+from typing import TYPE_CHECKING, Final
 
 from typing_extensions import override
 
@@ -15,7 +16,10 @@ if TYPE_CHECKING:
   from crossbench import path as pth
   from crossbench.plt.types import TupleCmdArgs
   from crossbench.probes.cb_perfetto.perfetto import PerfettoProbe
+  from crossbench.probes.results import ProbeResult
   from crossbench.runner.run import Run
+
+_ORPHAN_TRACE_GLOB: Final[str] = "*.tmp"
 
 
 class WindowsPerfettoProbeContext(PerfettoProbeContext):
@@ -70,3 +74,29 @@ class WindowsPerfettoProbeContext(PerfettoProbeContext):
   @override
   def perfetto_cmd(self) -> TupleCmdArgs:
     return ()
+
+  @override
+  def teardown(self) -> ProbeResult:
+    self._maybe_recover_orphaned_trace()
+    return super().teardown()
+
+  def _maybe_recover_orphaned_trace(self) -> None:
+    platform = self.browser_platform
+    result_path = self.result_path
+    if platform.is_file(result_path):
+      return
+
+    candidates = [
+        path for path in platform.glob(result_path.parent, _ORPHAN_TRACE_GLOB)
+        if platform.file_size(path) > 0
+    ]
+    if not candidates:
+      return
+    chosen = max(candidates, key=platform.file_size)
+
+    logging.warning(
+        "Perfetto trace was not renamed into place by the browser; "
+        "recovering %s -> %s (%d bytes). The browser was likely "
+        "force-terminated before its atomic rename completed.", chosen,
+        result_path, platform.file_size(chosen))
+    platform.rename(chosen, result_path)
