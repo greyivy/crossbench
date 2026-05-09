@@ -4,7 +4,7 @@
       "textproto":
         '''
           buffers: {
-              size_kb: 63488
+              size_kb: 32768
               fill_policy: DISCARD
           }
           data_sources: {
@@ -34,8 +34,8 @@
                   name: "org.chromium.trace_metadata2"
               }
           }
-          data_source_stop_timeout_ms: 30000
-          flush_timeout_ms: 30000
+          data_source_stop_timeout_ms: 1000
+          flush_timeout_ms: 3000 
         '''
     }
     "trace_processor": {
